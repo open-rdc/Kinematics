@@ -314,7 +314,7 @@ MatrixXf Kinematics::CalcJacobian(std::vector<int> idx)
 		Vector3f a = link[j].R * link[j].a;
 		Vector3f b = a.cross(target - link[j].p);
 		J(0,i) = b(0); J(1,i) = b(1); J(2,i) = b(2);
-		if ((j != Const::RP1)&&(j != Const::LP1)){			// 平行リンクのために追加した処理
+		if ((j != Const::RP1)&&(j != Const::LP1)&&(j != Const::RP3)&&(j != Const::LP3)){			// 平行リンクのために追加した処理
 			J(3,i) = a(0); J(4,i) = a(1); J(5,i) = a(2);
 		} else {
 			J(3,i) = 0; J(4,i) = 0; J(5,i) = 0;
@@ -381,12 +381,12 @@ int main()
 	servo_angle[Const::HIP_ROLL_R   ] =  M_PI / 8.0;
 	servo_angle[Const::HIP_YAW_R    ] =  M_PI / 8.0;
 
-//	servo_angle[Const::FOOT_ROLL_L] =  M_PI / 8.0;
-//	servo_angle[Const::KNEE_L1    ] =  M_PI / 4.0;
-//	servo_angle[Const::KNEE_L2    ] = -M_PI / 4.0;
-//	servo_angle[Const::LEG_PITCH_L] = -M_PI / 8.0;
-//	servo_angle[Const::LEG_ROLL_L ] =  M_PI / 8.0;
-//	servo_angle[Const::LEG_YAW_L  ] =  M_PI / 8.0;
+//	servo_angle[Const::ANKLE_ROLL_L ] =  M_PI / 8.0;
+//	servo_angle[Const::ANKLE_PITCH_L] =  M_PI / 8.0;
+//	servo_angle[Const::SHIN_PITCH_L ] =  M_PI / 4.0;
+//	servo_angle[Const::THIGH_PITCH_L] = -M_PI / 4.0;
+//	servo_angle[Const::HIP_ROLL_L   ] = -M_PI / 8.0;
+//	servo_angle[Const::HIP_YAW_L    ] =  M_PI / 8.0;
 
 	// 順運動学の計算
 	kine.setJointAngle(servo_angle);
@@ -395,7 +395,6 @@ int main()
 	// 保存
 	Link RFLink = link[Const::RR2];
 	Link LFLink = link[Const::LR2];
-//	LFLink.p[2] = -0.25;
 
 	std::cout << "RIGHT FOOT:\n" << link[Const::RR2].p << std::endl << std::endl;
 	std::cout << link[Const::RR2].R << std::endl << std::endl;
@@ -411,14 +410,11 @@ int main()
 	servo_angle[Const::HIP_YAW_R    ] =  0.0;
     
 	// 足は曲がっていることが必須
-	servo_angle[Const::SHIN_PITCH_L ] =  M_PI / 4.0;
-	servo_angle[Const::THIGH_PITCH_L] = -M_PI / 4.0;
+	servo_angle[Const::SHIN_PITCH_L ] =  M_PI / 8.0;
+	servo_angle[Const::THIGH_PITCH_L] = -M_PI / 8.0;
 
 	kine.setJointAngle(servo_angle);
 	kine.calcForwardKinematics();
-
-//	std::cout << "RIGHT FOOT (Default):\n" << link[Const::RR2].p << std::endl << std::endl;
-//	std::cout << "LEFT FOOT (Default):\n" << link[Const::LR2].p << std::endl << std::endl;
 
 	// 逆運動学の計算
 	kine.calcInverseKinematics(servo_angle, RFLink, LFLink);
@@ -445,16 +441,6 @@ int main()
 	std::cout << "HIP_ROLL_L   :" << servo_angle[Const::HIP_ROLL_L   ] << std::endl;
 	std::cout << "HIP_YAW_L    :" << servo_angle[Const::HIP_YAW_L    ] << std::endl << std::endl;
 
-/*    
-	std::cout << "LY  :" << link[Const::LY].q << std::endl;
-	std::cout << "LR1 :" << link[Const::LR1].q << std::endl;
-	std::cout << "LP1 :" << link[Const::LP1].q << std::endl;
-	std::cout << "LP2 :" << link[Const::LP2].q << std::endl;
-	std::cout << "LP3 :" << link[Const::LP3].q << std::endl;
-	std::cout << "LP4 :" << link[Const::LP4].q << std::endl;
-	std::cout << "LR2 :" << link[Const::LR2].q << std::endl;
-  */  
-	getchar();
 	return 0;
 }
 
