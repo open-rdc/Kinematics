@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * @file Kinematics.cpp
  * @brief 運動学を計算するプログラム
  * @date 2014.1.1
@@ -67,24 +67,21 @@ void Kinematics::calcForwardKinematics()
  */
 void Kinematics::setJointAngle(float *angle)
 {
-	// ToDo : 回転方向をチェック
-	link[Const::LR2].q =  angle[Const::FOOT_ROLL_L];	// 左足ロール軸
-	link[Const::LP4].q = -angle[Const::KNEE_L1    ];	// 左足膝下ピッチ軸（平行リンク）
-	link[Const::LP3].q =  angle[Const::KNEE_L1    ];
-	link[Const::LP2].q = -angle[Const::KNEE_L2    ];	// 左足膝上ピッチ軸（平行リンク）
-	link[Const::LP1].q =  angle[Const::KNEE_L2    ] 
-		+ angle[Const::LEG_PITCH_L];					// 左股ピッチ軸
-	link[Const::LR1].q =  angle[Const::LEG_ROLL_L ];	// 左股ロール軸
-	link[Const::LY ].q =  angle[Const::LEG_YAW_L  ];	// 左股ヨー軸
+	link[Const::LR2].q =  angle[Const::ANKLE_ROLL_L ];	// 左足首ロール軸
+	link[Const::LP4].q =  angle[Const::ANKLE_PITCH_L] - angle[Const::SHIN_PITCH_L] ;	// 左足首ピッチ軸
+	link[Const::LP3].q =  angle[Const::SHIN_PITCH_L ];  // 左足膝上ピッチ軸（平行リンク）
+	link[Const::LP2].q = -angle[Const::THIGH_PITCH_L];	// 左足膝上ピッチ軸（平行リンク）
+	link[Const::LP1].q =  angle[Const::THIGH_PITCH_L];  // 左股ピッチ軸（平行リンク）
+	link[Const::LR1].q =  angle[Const::HIP_ROLL_L ];	// 左股ロール軸
+	link[Const::LY ].q =  angle[Const::HIP_YAW_L  ];	// 左股ヨー軸
 
-	link[Const::RR2].q =  angle[Const::FOOT_ROLL_R];	// 右足ロール軸
-	link[Const::RP4].q = -angle[Const::KNEE_R1    ];	// 右足膝下ピッチ軸（平行リンク）
-	link[Const::RP3].q =  angle[Const::KNEE_R1    ];
-	link[Const::RP2].q = -angle[Const::KNEE_R2    ];	// 右足膝上ピッチ軸（平行リンク）
-	link[Const::RP1].q =  angle[Const::KNEE_R2    ] 
-		+ angle[Const::LEG_PITCH_R];					// 右股ピッチ軸
-	link[Const::RR1].q =  angle[Const::LEG_ROLL_R ];	// 右股ロール軸
-	link[Const::RY ].q =  angle[Const::LEG_YAW_R  ];	// 右股ヨー軸
+	link[Const::RR2].q =  angle[Const::ANKLE_ROLL_R ];	// 右足首ロール軸
+	link[Const::RP4].q =  angle[Const::ANKLE_PITCH_R] - angle[Const::SHIN_PITCH_R] ;	// 右足首ピッチ軸
+	link[Const::RP3].q =  angle[Const::SHIN_PITCH_R ];  // 右足膝上ピッチ軸（平行リンク）
+	link[Const::RP2].q = -angle[Const::THIGH_PITCH_R];	// 右足膝上ピッチ軸（平行リンク）
+	link[Const::RP1].q =  angle[Const::THIGH_PITCH_R];  // 右股ピッチ軸（平行リンク）
+	link[Const::RR1].q =  angle[Const::HIP_ROLL_R ];	// 右股ロール軸
+	link[Const::RY ].q =  angle[Const::HIP_YAW_R  ];	// 右股ヨー軸
 
 	link[Const::LSP].q =  angle[Const::ARM_PITCH_L];	// 左肩ピッチ軸
 	link[Const::LSR].q =  angle[Const::ARM_ROLL_L ];	// 左肩ロール軸
@@ -207,7 +204,7 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 	vector<bool> is_finish;
 	for(int i = 0; i < to.size(); i ++) is_finish.push_back(false);
 
-	for(int i = 0; i < 10; i ++){
+	for(int i = 0; i < 100; i ++){
 		int finish_count = 0;
 		for(int j = 0; j < to.size(); j ++){
 			if (is_finish[j]){
@@ -215,25 +212,28 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 				continue;
 			}
 			MatrixXf J = CalcJacobian(idx[j]);
-			std::cout << J << std::endl << std::endl;
 			MatrixXf err = CalcVWerr(target[j], link[to[j]]);
+            
+//            std::cout << J << std::endl << std::endl;
+//            std::cout << err.norm() << std::endl << std::endl;
 
 			if (err.norm() < EPS){
 				is_finish[j] = true;
 				finish_count ++;
 				continue;
 			}
-//			std::cout << "err.norm():" << err.norm() << std::endl;
 
 			VectorXf dq = lambda * (J.inverse() * err);
 			for(int nn = 0; nn < idx[j].size(); nn ++){
 				int k = idx[j].at(nn);
+//                std::cout << k << ", ";
 				link[k].q = link[k].q + dq(nn);
 			}
+//            std::cout << std::endl;
 		}
 		if (finish_count == to.size()) break;
-		link[Const::RP4].q = - link[Const::RP3].q;		// 平行リンクのために追加した処理
-		link[Const::LP4].q = - link[Const::LP3].q;
+		link[Const::RP2].q = - link[Const::RP1].q;		// 平行リンクのために追加した処理
+		link[Const::LP2].q = - link[Const::LP1].q;
 		ForwardKinematics(Const::CC);
 	}
 }
@@ -247,7 +247,7 @@ std::vector<int> Kinematics::FindRoute(int n)
 	int i = n;
 
 	while(i != Const::CC){
-		if ((i != Const::RP4)&&(i != Const::LP4))
+		if ((i != Const::RP2)&&(i != Const::LP2))
 			ret.push_back(i);
 		i = link[i].mother;
 	}
@@ -314,7 +314,7 @@ MatrixXf Kinematics::CalcJacobian(std::vector<int> idx)
 		Vector3f a = link[j].R * link[j].a;
 		Vector3f b = a.cross(target - link[j].p);
 		J(0,i) = b(0); J(1,i) = b(1); J(2,i) = b(2);
-		if ((j != Const::RP3)&&(j != Const::LP3)){			// 平行リンクのために追加した処理
+		if ((j != Const::RP1)&&(j != Const::LP1)){			// 平行リンクのために追加した処理
 			J(3,i) = a(0); J(4,i) = a(1); J(5,i) = a(2);
 		} else {
 			J(3,i) = 0; J(4,i) = 0; J(5,i) = 0;
@@ -345,21 +345,20 @@ void Kinematics::calcInverseKinematics(float *angle, Link RFLink, Link LFLink)
 
 	InverseKinematics(to, target);		// 逆運動学の計算
 	
-	angle[Const::FOOT_ROLL_R] =  link[Const::RR2].q						;	// 足首ロール軸
-	angle[Const::KNEE_R1    ] = -link[Const::RP4].q						;	// 足首ピッチ軸
-	angle[Const::KNEE_R2    ] = -link[Const::RP2].q						;	// 膝上ピッチ軸
-	angle[Const::LEG_PITCH_R] =  link[Const::RP1].q + link[Const::RP2].q;	// 股ピッチ軸
-	angle[Const::LEG_ROLL_R ] =  link[Const::RR1].q						;	// 股ロール軸
-	angle[Const::LEG_YAW_R  ] =  link[Const::RY ].q						;	// 股ヨー軸
+	angle[Const::ANKLE_ROLL_R ] =  link[Const::RR2].q                       ;	// 足首ロール軸
+	angle[Const::ANKLE_PITCH_R] =  link[Const::RP3].q + link[Const::RP4].q  ;	// 足首ピッチ軸
+	angle[Const::SHIN_PITCH_R ] =  link[Const::RP3].q;	// 足首ピッチ軸
+	angle[Const::THIGH_PITCH_R] =  link[Const::RP1].q						;	// 膝上ピッチ軸
+	angle[Const::HIP_ROLL_R   ] =  link[Const::RR1].q						;	// 股ロール軸
+	angle[Const::HIP_YAW_R    ] =  link[Const::RY ].q						;	// 股ヨー軸
 
-	angle[Const::FOOT_ROLL_L] =  link[Const::LR2].q						;	// 足首ロール軸
-	angle[Const::KNEE_L1    ] = -link[Const::LP4].q						;	// 足首ピッチ軸
-	angle[Const::KNEE_L2    ] = -link[Const::LP2].q						;	// 膝上ピッチ軸
-	angle[Const::LEG_PITCH_L] =  link[Const::LP1].q + link[Const::LP2].q;	// 股ピッチ軸
-	angle[Const::LEG_ROLL_L ] =  link[Const::LR1].q						;	// 股ロール軸
-	angle[Const::LEG_YAW_L  ] =  link[Const::LY ].q						;	// 股ヨー軸
+	angle[Const::ANKLE_ROLL_L ] =  link[Const::LR2].q                       ;	// 足首ロール軸
+	angle[Const::ANKLE_PITCH_L] =  link[Const::LP3].q + link[Const::LP4].q  ;	// 足首ピッチ軸
+	angle[Const::SHIN_PITCH_L ] =  link[Const::LP3].q;	// 足首ピッチ軸
+	angle[Const::THIGH_PITCH_L] =  link[Const::LP1].q						;	// 膝上ピッチ軸
+	angle[Const::HIP_ROLL_L   ] =  link[Const::LR1].q						;	// 股ロール軸
+	angle[Const::HIP_YAW_L    ] =  link[Const::LY ].q						;	// 股ヨー軸
 }
-
 
 #if 1
 
@@ -375,12 +374,12 @@ int main()
 	for(int i = 0; i < Const::SERVO_MAX_ID; i ++){
 		servo_angle[i] = 0;
 	}
-	servo_angle[Const::FOOT_ROLL_R] =  M_PI / 8.0;
-	servo_angle[Const::KNEE_R1    ] =  M_PI / 4.0;
-	servo_angle[Const::KNEE_R2    ] = -M_PI / 4.0;
-	servo_angle[Const::LEG_PITCH_R] = -M_PI / 8.0;
-	servo_angle[Const::LEG_ROLL_R ] =  M_PI / 8.0;
-	servo_angle[Const::LEG_YAW_R  ] =  M_PI / 8.0;
+	servo_angle[Const::ANKLE_ROLL_R ] =  M_PI / 8.0;
+	servo_angle[Const::ANKLE_PITCH_R] =  M_PI / 8.0;
+	servo_angle[Const::SHIN_PITCH_R ] =  M_PI / 4.0;
+	servo_angle[Const::THIGH_PITCH_R] = -M_PI / 4.0;
+	servo_angle[Const::HIP_ROLL_R   ] =  M_PI / 8.0;
+	servo_angle[Const::HIP_YAW_R    ] =  M_PI / 8.0;
 
 //	servo_angle[Const::FOOT_ROLL_L] =  M_PI / 8.0;
 //	servo_angle[Const::KNEE_L1    ] =  M_PI / 4.0;
@@ -404,16 +403,16 @@ int main()
 	std::cout << link[Const::LR2].R << std::endl << std::endl;
 
 	// 関節角度の変更
-	servo_angle[Const::FOOT_ROLL_R] = 0.0;
-	servo_angle[Const::KNEE_R1    ] =  M_PI / 8.0;
-	servo_angle[Const::KNEE_R2    ] = -M_PI / 8.0;
-	servo_angle[Const::LEG_PITCH_R] = 0.0;
-	servo_angle[Const::LEG_ROLL_R ] = 0.0;
-	servo_angle[Const::LEG_YAW_R  ] = 0.0;
-
+	servo_angle[Const::ANKLE_ROLL_R ] =  0.0;
+	servo_angle[Const::ANKLE_PITCH_R] =  0.0;
+	servo_angle[Const::SHIN_PITCH_R ] =  M_PI / 8.0;
+	servo_angle[Const::THIGH_PITCH_R] = -M_PI / 8.0;
+	servo_angle[Const::HIP_ROLL_R   ] =  0.0;
+	servo_angle[Const::HIP_YAW_R    ] =  0.0;
+    
 	// 足は曲がっていることが必須
-	servo_angle[Const::KNEE_L1    ] =  M_PI / 8.0;
-	servo_angle[Const::KNEE_L2    ] = -M_PI / 8.0;
+	servo_angle[Const::SHIN_PITCH_L ] =  M_PI / 4.0;
+	servo_angle[Const::THIGH_PITCH_L] = -M_PI / 4.0;
 
 	kine.setJointAngle(servo_angle);
 	kine.calcForwardKinematics();
@@ -429,23 +428,32 @@ int main()
 	std::cout << "Inverse Kinematics\nRIGHT FOOT:\n" << link[Const::RR2].p << std::endl << std::endl;
 	std::cout << link[Const::RR2].R << std::endl << std::endl;
 
-	std::cout << "FOOT_ROLL_R:" << servo_angle[Const::FOOT_ROLL_R] << std::endl;
-	std::cout << "KNEE_R1    :" << servo_angle[Const::KNEE_R1    ] << std::endl;
-	std::cout << "KNEE_R2    :" << servo_angle[Const::KNEE_R2    ] << std::endl;
-	std::cout << "LEG_PITCH_R:" << servo_angle[Const::LEG_PITCH_R] << std::endl;
-	std::cout << "LEG_ROLL_R :" << servo_angle[Const::LEG_ROLL_R ] << std::endl;
-	std::cout << "LEG_YAW_R  :" << servo_angle[Const::LEG_YAW_R  ] << std::endl << std::endl;
+	std::cout << "ANKLE_ROLL_R :" << servo_angle[Const::ANKLE_ROLL_R ] << std::endl;
+	std::cout << "ANKLE_PITCH_R:" << servo_angle[Const::ANKLE_PITCH_R] << std::endl;
+	std::cout << "SHIN_PITCH_R :" << servo_angle[Const::SHIN_PITCH_R ] << std::endl;
+	std::cout << "THIGH_PITCH_R:" << servo_angle[Const::THIGH_PITCH_R] << std::endl;
+	std::cout << "HIP_ROLL_R   :" << servo_angle[Const::HIP_ROLL_R   ] << std::endl;
+	std::cout << "HIP_YAW_R    :" << servo_angle[Const::HIP_YAW_R    ] << std::endl << std::endl;
 
 	std::cout << "Inverse Kinematics\nLEFT FOOT:\n" << link[Const::LR2].p << std::endl << std::endl;
 	std::cout << link[Const::LR2].R << std::endl << std::endl;
 
-	std::cout << "FOOT_ROLL_L:" << servo_angle[Const::FOOT_ROLL_L] << std::endl;
-	std::cout << "KNEE_L1    :" << servo_angle[Const::KNEE_L1    ] << std::endl;
-	std::cout << "KNEE_L2    :" << servo_angle[Const::KNEE_L2    ] << std::endl;
-	std::cout << "LEG_PITCH_L:" << servo_angle[Const::LEG_PITCH_L] << std::endl;
-	std::cout << "LEG_ROLL_L :" << servo_angle[Const::LEG_ROLL_L ] << std::endl;
-	std::cout << "LEG_YAW_L  :" << servo_angle[Const::LEG_YAW_L  ] << std::endl;
+	std::cout << "ANKLE_ROLL_L :" << servo_angle[Const::ANKLE_ROLL_L ] << std::endl;
+	std::cout << "ANKLE_PITCH_L:" << servo_angle[Const::ANKLE_PITCH_L] << std::endl;
+	std::cout << "SHIN_PITCH_L :" << servo_angle[Const::SHIN_PITCH_L ] << std::endl;
+	std::cout << "THIGH_PITCH_L:" << servo_angle[Const::THIGH_PITCH_L] << std::endl;
+	std::cout << "HIP_ROLL_L   :" << servo_angle[Const::HIP_ROLL_L   ] << std::endl;
+	std::cout << "HIP_YAW_L    :" << servo_angle[Const::HIP_YAW_L    ] << std::endl << std::endl;
 
+/*    
+	std::cout << "LY  :" << link[Const::LY].q << std::endl;
+	std::cout << "LR1 :" << link[Const::LR1].q << std::endl;
+	std::cout << "LP1 :" << link[Const::LP1].q << std::endl;
+	std::cout << "LP2 :" << link[Const::LP2].q << std::endl;
+	std::cout << "LP3 :" << link[Const::LP3].q << std::endl;
+	std::cout << "LP4 :" << link[Const::LP4].q << std::endl;
+	std::cout << "LR2 :" << link[Const::LR2].q << std::endl;
+  */  
 	getchar();
 	return 0;
 }
