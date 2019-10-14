@@ -1,12 +1,12 @@
 /*!
  * @file Constant.h
- * @brief ƒOƒ[ƒoƒ‹‚È•Ï”ƒŠƒXƒg
- * ‘S‘Ì‚É‹¤’Ê‚·‚é’è”‚Í‚±‚Ìƒtƒ@ƒCƒ‹‚É‹Lq‚·‚é
+ * @brief ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªå¤‰æ•°ãƒªã‚¹ãƒˆ
+ * å…¨ä½“ã«å…±é€šã™ã‚‹å®šæ•°ã¯ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«è¨˜è¿°ã™ã‚‹
  *
- * ˆÈ‰º‚É‰Á‚¦‚é‚±‚Æ‚Åƒƒ{ƒbƒg‚ðØ‚è‘Ö‚¦‚é
+ * ä»¥ä¸‹ã«åŠ ãˆã‚‹ã“ã¨ã§ãƒ­ãƒœãƒƒãƒˆã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
  * using namespace CitAccelite
- * using namespace CitDynamo (–¢ŽÀ‘•)
- * using namespace CitXega (–¢ŽÀ‘•)
+ * using namespace CitDynamo (æœªå®Ÿè£…)
+ * using namespace CitXega (æœªå®Ÿè£…)
  *
  * @date 2013.12.31
  * @author Yasuo Hayashibara
@@ -14,168 +14,111 @@
 
 #pragma once
 
-#define CIT_DYNAMO
-
 namespace Const {
 
-// ƒVƒXƒeƒ€
-const int ROBOT_TYPE_HR42	= 42;			//! Dynamo
-const int ROBOT_TYPE_HR46	= 46;			//! Accelite
-
-// §Œä
-const float ST				= 0.020f;		//! ƒTƒ“ƒvƒŠƒ“ƒOƒ^ƒCƒ€ (s)
-
-const int OFF				= 0;
-const int ON				= 1;
-
-const int NEUTRAL			= 0;
-const int FOWARD			= 1;
-const int BACKWARD			= 2;
-const int RIGHT 			= 3;
-const int LEFT				= 4;
-
-const float GRAVITY			= 9.8f;			//! d—Í‰Á‘¬“x(m/s^2)
-
-// Accelite‚ÌŒÅ—L‚Ì’è”
-#ifdef CIT_DYNAMO
-
 /*
- * @class Accelite‚Ì’è”‚ð‹Lq‚·‚é
+ * @class Acceliteã®å®šæ•°ã‚’è¨˜è¿°ã™ã‚‹
  */
-const int SERVO_NUM = 18;	//! ƒT[ƒ{‚ÌŒÂ” (Accelite)
-enum {								//! ƒT[ƒ{‚Ì”Ô†
-	FOOT_ROLL_L 	= 	0,			//! ¶‘«Žñ‚Ìƒ[ƒ‹Ž²
-	KNEE_L1 		= 	1,			//! ¶‘«•G‰ºƒsƒbƒ`Ž²i•½sƒŠƒ“ƒNj
-	KNEE_L2 		= 	2,			//! ¶‘«•Gãƒsƒbƒ`Ž²i•½sƒŠƒ“ƒNj
-	LEG_PITCH_L 	= 	3,			//! ¶ŒÒ‚Ìƒsƒbƒ`Ž²iƒVƒŠƒAƒ‹ƒŠƒ“ƒNCŒÒ‚Ìƒsƒbƒ`Ž²‚Æ‡‚í‚¹‚Ä‘«Žñ‚ÌŒü‚«‚ð•ÏXj
-	LEG_ROLL_L	 	= 	4,			//! ¶ŒÒ‚Ìƒ[ƒ‹Ž²
-	LEG_YAW_L 		= 	5,			//! ¶ŒÒ‚Ìƒˆ[Ž²
-	FOOT_ROLL_R 	= 	6,			//! ‰E‘«Žñ‚Ìƒ[ƒ‹Ž²
-	KNEE_R1		 	= 	7,			//! ‰E‘«•G‰ºƒsƒbƒ`Ž²i•½sƒŠƒ“ƒNj
-	KNEE_R2 		= 	8,			//! ‰E‘«•Gãƒsƒbƒ`Ž²i•½sƒŠƒ“ƒNj
-	LEG_PITCH_R 	= 	9,			//! ‰EŒÒ‚Ìƒsƒbƒ`Ž²iƒVƒŠƒAƒ‹ƒŠƒ“ƒNCŒÒ‚Ìƒsƒbƒ`Ž²‚Æ‡‚í‚¹‚Ä‘«Žñ‚ÌŒü‚«‚ð•ÏXj
-	LEG_ROLL_R	 	= 	10,			//! ‰EŒÒ‚Ìƒ[ƒ‹Ž²
-	LEG_YAW_R 		= 	11,			//! ‰EŒÒ‚Ìƒˆ[Ž²
-	ARM_PITCH_L		= 	14,			//! ¶˜r‚Ìƒsƒbƒ`Ž²
-	ARM_ROLL_L		= 	15,			//! ¶˜r‚Ìƒ[ƒ‹Ž²
-	ARM_PITCH_R		= 	18,			//! ‰E˜r‚Ìƒsƒbƒ`Ž²
-	ARM_ROLL_R		= 	19,			//! ‰E˜r‚Ìƒ[ƒ‹Ž²
-	HEAD_YAW		= 	22,			//! Žñ‚Ìƒˆ[Ž²
-	HEAD_PITCH		= 	23,			//! Žñ‚Ìƒsƒbƒ`Ž²iAccelite‚Í–³‚¢j
+const int SERVO_NUM = 18;	//! ã‚µãƒ¼ãƒœã®å€‹æ•° (Accelite)
+enum {								//! ã‚µãƒ¼ãƒœã®ç•ªå·
+	ANKLE_ROLL_L 	= 	0,			//! å·¦è¶³é¦–ã®ãƒ­ãƒ¼ãƒ«è»¸
+	ANKLE_PITCH_L	=	1,			//! å·¦è¶³é¦–ã®ãƒ”ãƒƒãƒè»¸
+	SHIN_PITCH_L 	= 	2,			//! å·¦è¶³è†ä¸‹ãƒ”ãƒƒãƒè»¸ï¼ˆå¹³è¡Œãƒªãƒ³ã‚¯ï¼‰
+	THIGH_PITCH_L 	= 	3,			//! å·¦è¶³è†ä¸Šãƒ”ãƒƒãƒè»¸ï¼ˆå¹³è¡Œãƒªãƒ³ã‚¯ï¼‰
+	HIP_ROLL_L	 	= 	4,			//! å·¦è‚¡ã®ãƒ­ãƒ¼ãƒ«è»¸
+	HIP_YAW_L 		= 	5,			//! å·¦è‚¡ã®ãƒ¨ãƒ¼è»¸
+	ANKLE_ROLL_R 	= 	6,			//! å³è¶³é¦–ã®ãƒ­ãƒ¼ãƒ«è»¸
+	ANKLE_PITCH_R	=	7,			//! å³è¶³é¦–ã®ãƒ”ãƒƒãƒè»¸
+	SHIN_PITCH_R 	= 	8,			//! å³è¶³è†ä¸‹ãƒ”ãƒƒãƒè»¸ï¼ˆå¹³è¡Œãƒªãƒ³ã‚¯ï¼‰
+	THIGH_PITCH_R 	= 	9,			//! å³è¶³è†ä¸Šãƒ”ãƒƒãƒè»¸ï¼ˆå¹³è¡Œãƒªãƒ³ã‚¯ï¼‰
+	HIP_ROLL_R	 	= 	10,			//! å³è‚¡ã®ãƒ­ãƒ¼ãƒ«è»¸
+	HIP_YAW_R 		= 	11,			//! å³è‚¡ã®ãƒ¨ãƒ¼è»¸	
+	ARM_PITCH_L		= 	14,			//! å·¦è…•ã®ãƒ”ãƒƒãƒè»¸
+	ARM_ROLL_L		= 	15,			//! å·¦è…•ã®ãƒ­ãƒ¼ãƒ«è»¸
+	ARM_PITCH_R		= 	18,			//! å³è…•ã®ãƒ”ãƒƒãƒè»¸
+	ARM_ROLL_R		= 	19,			//! å³è…•ã®ãƒ­ãƒ¼ãƒ«è»¸
+	HEAD_YAW		= 	22,			//! é¦–ã®ãƒ¨ãƒ¼è»¸
+	HEAD_PITCH		= 	23,			//! é¦–ã®ãƒ”ãƒƒãƒè»¸ï¼ˆAcceliteã¯ç„¡ã„ï¼‰
 	SERVO_MAX_ID
 };
 
-const int SERVO_NO[SERVO_NUM] =			//! ƒT[ƒ{‚Ì”Ô†—ñ
-{
-	FOOT_ROLL_L ,
-	KNEE_L1     ,
-	KNEE_L2     ,
-	LEG_PITCH_L ,
-	LEG_ROLL_L  ,
-	LEG_YAW_L   ,
-	FOOT_ROLL_R ,
-	KNEE_R1     ,
-	KNEE_R2     ,
-	LEG_PITCH_R ,
-	LEG_ROLL_R  ,
-	LEG_YAW_R   ,
-	ARM_PITCH_L ,
-	ARM_ROLL_L  ,
-	ARM_PITCH_R ,
-	ARM_ROLL_R  ,
-	HEAD_YAW    ,
-	HEAD_PITCH  ,
+// ãƒªãƒ³ã‚¯
+enum {			// ãƒªãƒ³ã‚¯ã®ç•ªå·
+	CAM ,		//! ã‚«ãƒ¡ãƒ©ã®ãƒªãƒ³ã‚¯ï¼ˆå…‰è»¸ã‚’æ±‚ã‚ã‚‹ãŸã‚ï¼‰
+	HT	,		//! é ­ã®ãƒãƒ«ãƒˆè»¸ã‹ã‚‰ã‚«ãƒ¡ãƒ© (Acceliteã¯å›ºå®š)
+	HP	,		//! é ­ã®ãƒ‘ãƒ³è»¸ã‹ã‚‰ãƒãƒ«ãƒˆè»¸
+	SH	,		//! è‚©ä¸­å¿ƒã‹ã‚‰é ­ã®ãƒ‘ãƒ³è»¸
+	CS	,		//! è…°ã‹ã‚‰è‚©ä¸­å¿ƒ
+	CC	,		//! è…°ï¼ˆåŸºç‚¹ï¼‰
+	RY	,		//! å³è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	RR1	,		//! å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è‚¡ãƒ”ãƒƒãƒè»¸
+	RP1	,		//! å³è‚¡ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è†ä¸Šãƒ”ãƒƒãƒè»¸
+	RP2	,		//! å³è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	RP3	,		//1 å³è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	RP4	,		//! å³è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	RR2	,		//! å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è¶³å…ˆ
+	RF  ,		//! å·¦è¶³å…ˆ
+	LY	,		//! å·¦è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å·¦è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	LR1	,		//! å·¦è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è‚¡ãƒ”ãƒƒãƒè»¸
+	LP1	,		//! å·¦è‚¡ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è†ä¸Šãƒ”ãƒƒãƒè»¸
+	LP2	,		//! å·¦è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	LP3	,		//! å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	LP4	,		//! å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	LR2	,		//! å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è¶³å…ˆ
+	LF  ,       //! å·¦è¶³å…ˆ
+	RSP ,		//! å³è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	RSR	,		//! å³è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è…•å…ˆç«¯
+	RH  ,       //! å³è…•å…ˆç«¯
+	LSP ,		//! å³è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	LSR	,		//! å³è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è…•å…ˆç«¯
+	LH  ,       //! å·¦è…•å…ˆç«¯
+	LINK_NUM	//! ãƒªãƒ³ã‚¯ã®æ•°	
 };
 
-// ƒŠƒ“ƒN
-enum {			// ƒŠƒ“ƒN‚Ì”Ô†
-	CAM	,		//! ƒJƒƒ‰‚ÌƒŠƒ“ƒNiŒõŽ²‚ð‹‚ß‚é‚½‚ßj
-	HT	,		//! “ª‚Ìƒ`ƒ‹ƒgŽ²‚©‚çƒJƒƒ‰ (Accelite‚ÍŒÅ’è)
-	HP	,		//! “ª‚Ìƒpƒ“Ž²‚©‚çƒ`ƒ‹ƒgŽ²
-	SH	,		//! Œ¨’†S‚©‚ç“ª‚Ìƒpƒ“Ž²
-	CS	,		//! ˜‚©‚çŒ¨’†S
-	CC	,		//! ˜iŠî“_j
-	RY	,		//! ‰EŒÒƒˆ[Ž²‚©‚ç‰EŒÒƒ[ƒ‹Ž²
-	RR1	,		//! ‰EŒÒƒ[ƒ‹Ž²‚©‚ç‰EŒÒƒsƒbƒ`Ž²
-	RP1	,		//! ‰EŒÒƒsƒbƒ`Ž²‚©‚ç‰E•Gãƒsƒbƒ`Ž²
-	RP2	,		//! ‰E•Gãƒsƒbƒ`Ž²‚©‚ç‰E•G‰ºƒsƒbƒ`Ž²
-	RP3	,		//1 ‰E•G‰ºƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒsƒbƒ`Ž²
-	RP4	,		//! ‰E‘«Žñƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒ[ƒ‹Ž²
-	RR2	,		//! ‰E‘«Žñƒ[ƒ‹Ž²‚©‚ç‰E‘«æ
-	RF  ,		//! ¶‘«æ
-	LY	,		//! ¶ŒÒƒˆ[Ž²‚©‚ç¶ŒÒƒ[ƒ‹Ž²
-	LR1	,		//! ¶ŒÒƒ[ƒ‹Ž²‚©‚ç¶ŒÒƒsƒbƒ`Ž²
-	LP1	,		//! ¶ŒÒƒsƒbƒ`Ž²‚©‚ç¶•Gãƒsƒbƒ`Ž²
-	LP2	,		//! ¶•Gãƒsƒbƒ`Ž²‚©‚ç¶•G‰ºƒsƒbƒ`Ž²
-	LP3	,		//! ¶•G‰ºƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒsƒbƒ`Ž²
-	LP4	,		//! ¶‘«Žñƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒ[ƒ‹Ž²
-	LR2	,		//! ¶‘«Žñƒ[ƒ‹Ž²‚©‚ç¶‘«æ
-	LF  ,       //! ¶‘«æ
-	RSP ,		//! ‰EŒ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	RSR	,		//! ‰EŒ¨ƒ[ƒ‹Ž²‚©‚ç‰E˜ræ’[
-	RH  ,       //! ‰E˜ræ’[
-	LSP ,		//! ‰EŒ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	LSR	,		//! ‰EŒ¨ƒ[ƒ‹Ž²‚©‚ç‰E˜ræ’[
-	LH  ,       //! ¶˜ræ’[
-	LINK_NUM	//! ƒŠƒ“ƒN‚Ì”	
-};
-
-const float HIP_WIDTH	= 0.088f;	//! ŒÒ‚Ì• (m)
-const float L01			= 0.032f;	//! ‘«Žñ‚©‚ç‘«æ‚Ü‚Å‚Ì’·‚³ (m)
-const float L1			= 0.098f;	//! ‘«Žñ‚©‚ç•G‚Ü‚Å‚Ì’·‚³ (m)
-const float L12			= 0.023f;	//! •GŠÔ‚Ì‹——£ (m)
-const float L2			= 0.098f;	//! •G‚©‚çŒÒ‚Ü‚Å‚Ì’·‚³ (m)
-const float L23			= 0.0f;		//! •G‚©‚çŒÒ‚Ü‚Å‚Ì’·‚³ (m)
-const float L3			= 0.043f;	//! ˜‚Ü‚Å‚Ì’·‚³ (m)
-
-const float Z3_LIMIT_H  = L01 + L1 + L12 + L2 + L23 + L3 ;
-									//! ˜‚Ì‚‚³‚ÌÅ‘å’l (m)
-const float Z3_LIMIT_L	= 0.120f;	//! ˜‚Ì‚‚³‚ÌÅ¬’l (m)
-
-// ƒŠƒ“ƒN
-struct link_para_T {				//! ƒŠƒ“ƒNƒpƒ‰ƒ[ƒ^‚Ì\‘¢‘Ì
+// ãƒªãƒ³ã‚¯
+struct link_para_T {				//! ãƒªãƒ³ã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ§‹é€ ä½“
 	float p[3];
 	float a[3];
 };
 
 const struct link_para_T LINK_PARA[LINK_NUM] = {
-//	{{  ‘OŒã,   ¶‰E,   ã‰º},{‘OŒãŽ²,¶‰EŽ²,ã‰ºŽ²}} (mm)
-//	˜ -> “ª
-	{{300.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// CAM : ƒJƒƒ‰‚ÌƒŠƒ“ƒNiŒõŽ²‚ð‹‚ß‚é‚½‚ßj
-	{{  0.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// HT  : “ª‚Ìƒ`ƒ‹ƒgŽ²‚©‚çƒJƒƒ‰ (Accelite‚ÍŒÅ’è)
-	{{ 49.4f,   0.0f,  41.6f},{  0.0f,  1.0f,  0.0f}},	// HP  : “ª‚Ìƒpƒ“Ž²‚©‚çƒ`ƒ‹ƒgŽ²
-	{{-10.0f,   0.0f,  29.7f},{  0.0f,  0.0f,  1.0f}},	// SH  : Œ¨’†S‚©‚ç“ª‚Ìƒpƒ“Ž²
-	{{  0.0f,   0.0f, 126.5f},{  0.0f,  0.0f,  0.0f}},	// CS  : ˜‚©‚çŒ¨’†S
-	{{  0.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// CC  : ˜iŠî“_j
-//	˜ -> ‰E‘«æ
-	{{  0.0f, -44.0f,   0.0f},{  0.0f,  0.0f,  1.0f}},	// RY  : ‰EŒÒƒˆ[Ž²‚©‚ç‰EŒÒƒ[ƒ‹Ž²
-	{{  0.0f,   0.0f, -42.8f},{  1.0f,  0.0f,  0.0f}},	// RR1 : ‰EŒÒƒ[ƒ‹Ž²‚©‚ç‰EŒÒƒsƒbƒ`Ž²
-	{{ 15.0f,   0.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// RP1 : ‰EŒÒƒsƒbƒ`Ž²‚©‚ç‰E•Gãƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f,-105.0f},{  0.0f,  1.0f,  0.0f}},	// RP2 : ‰E•Gãƒsƒbƒ`Ž²‚©‚ç‰E•G‰ºƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f, -41.0f},{  0.0f,  1.0f,  0.0f}},	// RP3 : ‰E•G‰ºƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f,-105.0f},{  0.0f,  1.0f,  0.0f}},	// RP4 : ‰E‘«Žñƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒ[ƒ‹Ž²
-	{{  0.0f,   0.0f,   0.0f},{  1.0f,  0.0f,  0.0f}},	// RR2 : ‰E‘«Žñƒ[ƒ‹Ž²‚©‚ç‰E‘«æ
-	{{  0.0f,   0.0f, -43.5f},{  0.0f,  0.0f,  0.0f}},	// RF  : ‰E‘«æ
-//	˜ -> ¶‘«æ
-	{{  0.0f,  44.0f,   0.0f},{  0.0f,  0.0f,  1.0f}},	// LY  : ¶ŒÒƒˆ[Ž²‚©‚ç¶ŒÒƒ[ƒ‹Ž²
-	{{  0.0f,   0.0f, -42.8f},{  1.0f,  0.0f,  0.0f}},	// LR1 : ¶ŒÒƒ[ƒ‹Ž²‚©‚ç¶ŒÒƒsƒbƒ`Ž²
-	{{ 15.0f,   0.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// LP1 : ¶ŒÒƒsƒbƒ`Ž²‚©‚ç¶•Gãƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f,-105.0f},{  0.0f,  1.0f,  0.0f}},	// LP2 : ¶•Gãƒsƒbƒ`Ž²‚©‚ç¶•G‰ºƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f, -41.0f},{  0.0f,  1.0f,  0.0f}},	// LP3 : ¶•G‰ºƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒsƒbƒ`Ž²
-	{{  0.0f,   0.0f,-105.0f},{  0.0f,  1.0f,  0.0f}},	// LP4 : ¶‘«Žñƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒ[ƒ‹Ž²
-	{{  0.0f,   0.0f,   0.0f},{  1.0f,  0.0f,  0.0f}},	// LR2 : ¶‘«Žñƒ[ƒ‹Ž²‚©‚ç¶‘«æ
-	{{  0.0f,   0.0f, -43.5f},{  0.0f,  0.0f,  0.0f}},	// LF  : ¶‘«æ
-//	Œ¨’†S -> ‰EŽèæ
-	{{  0.0f, -61.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// RSP : ‰EŒ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	{{  0.0f, -17.9f, -41.8f},{  1.0f,  0.0f,  0.0f}},	// RSR : ‰EŒ¨ƒ[ƒ‹Ž²‚©‚ç‰E˜ræ’[
-	{{  0.0f, -30.0f,-247.6f},{  0.0f,  0.0f,  0.0f}},	// RH  : ‰E˜ræ’[
-//	Œ¨’†S -> ¶Žèæ
-	{{  0.0f,  61.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// LSP : ¶Œ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	{{  0.0f,  17.9f, -41.8f},{  1.0f,  0.0f,  0.0f}},	// LSR : ¶Œ¨ƒ[ƒ‹Ž²‚©‚ç¶˜ræ’[
-	{{  0.0f,  30.0f,-247.6f},{  0.0f,  0.0f,  0.0f}},	// LH  : ¶˜ræ’[
+//	{{  å‰å¾Œ,   å·¦å³,   ä¸Šä¸‹},{å‰å¾Œè»¸,å·¦å³è»¸,ä¸Šä¸‹è»¸}} (mm)
+//	è…° -> é ­
+	{{300.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// CAM : ã‚«ãƒ¡ãƒ©ã®ãƒªãƒ³ã‚¯ï¼ˆå…‰è»¸ã‚’æ±‚ã‚ã‚‹ãŸã‚ï¼‰
+	{{  0.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// HT  : é ­ã®ãƒãƒ«ãƒˆè»¸ã‹ã‚‰ã‚«ãƒ¡ãƒ© (Acceliteã¯å›ºå®š)
+	{{ 49.4f,   0.0f,  41.6f},{  0.0f,  1.0f,  0.0f}},	// HP  : é ­ã®ãƒ‘ãƒ³è»¸ã‹ã‚‰ãƒãƒ«ãƒˆè»¸
+	{{-10.0f,   0.0f,  29.7f},{  0.0f,  0.0f,  1.0f}},	// SH  : è‚©ä¸­å¿ƒã‹ã‚‰é ­ã®ãƒ‘ãƒ³è»¸
+	{{  0.0f,   0.0f, 126.5f},{  0.0f,  0.0f,  0.0f}},	// CS  : è…°ã‹ã‚‰è‚©ä¸­å¿ƒ
+	{{  0.0f,   0.0f,   0.0f},{  0.0f,  0.0f,  0.0f}},	// CC  : è…°ï¼ˆåŸºç‚¹ï¼‰
+//	è…° -> å³è¶³å…ˆ
+	{{  0.0f, -44.0f,   0.0f},{  0.0f,  0.0f,  1.0f}},	// RY  : è…°ã‹ã‚‰å³è‚¡ãƒ¨ãƒ¼è»¸
+	{{  0.0f,   0.0f, -57.5f},{  1.0f,  0.0f,  0.0f}},	// RR1 : å³è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f,   0.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// RP1 : å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è†ä¸Šãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f,-100.0f},{  0.0f,  1.0f,  0.0f}},	// RP2 : å³è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f, -57.0f},{  0.0f,  1.0f,  0.0f}},	// RP3 : å³è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f,-100.0f},{  0.0f,  1.0f,  0.0f}},	// RP4 : å³è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f,   0.0f,   0.0f},{  1.0f,  0.0f,  0.0f}},	// RR2 : å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è¶³å…ˆ
+	{{  0.0f,   0.0f, -43.0f},{  0.0f,  0.0f,  0.0f}},	// RF  : å³è¶³å…ˆ
+//	è…° -> å·¦è¶³å…ˆ
+	{{  0.0f,  44.0f,   0.0f},{  0.0f,  0.0f,  1.0f}},	// LY  : è…°ã‹ã‚‰å·¦è‚¡ãƒ¨ãƒ¼è»¸
+	{{  0.0f,   0.0f, -57.5f},{  1.0f,  0.0f,  0.0f}},	// LR1 : å·¦è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å·¦è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f,   0.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// LP1 : å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è†ä¸Šãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f,-100.0f},{  0.0f,  1.0f,  0.0f}},	// LP2 : å·¦è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f, -57.0f},{  0.0f,  1.0f,  0.0f}},	// LP3 : å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	{{  0.0f,   0.0f,-100.0f},{  0.0f,  1.0f,  0.0f}},	// LP4 : å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f,   0.0f,   0.0f},{  1.0f,  0.0f,  0.0f}},	// LR2 : å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è¶³å…ˆ
+	{{  0.0f,   0.0f, -43.0f},{  0.0f,  0.0f,  0.0f}},	// LF  : å·¦è¶³å…ˆ
+//	è‚©ä¸­å¿ƒ -> å³æ‰‹å…ˆ
+	{{  0.0f, -61.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// RSP : å³è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f, -17.9f, -41.8f},{  1.0f,  0.0f,  0.0f}},	// RSR : å³è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è…•å…ˆç«¯
+	{{  0.0f, -30.0f,-247.6f},{  0.0f,  0.0f,  0.0f}},	// RH  : å³è…•å…ˆç«¯
+//	è‚©ä¸­å¿ƒ -> å·¦æ‰‹å…ˆ
+	{{  0.0f,  61.0f,   0.0f},{  0.0f,  1.0f,  0.0f}},	// LSP : å·¦è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	{{  0.0f,  17.9f, -41.8f},{  1.0f,  0.0f,  0.0f}},	// LSR : å·¦è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è…•å…ˆç«¯
+	{{  0.0f,  30.0f,-247.6f},{  0.0f,  0.0f,  0.0f}},	// LH  : å·¦è…•å…ˆç«¯
 };
 
-// ƒŠƒ“ƒN‚ÌÚ‘±
+// ãƒªãƒ³ã‚¯ã®æŽ¥ç¶š
 
 struct link_connect_T {
 	int sister;
@@ -187,40 +130,40 @@ const int NON = -1;
 
 static const struct link_connect_T LINK_CONNECT[LINK_NUM] =
 {
-	{ NON, NON, HT  },	// CAM : ƒJƒƒ‰‚ÌƒŠƒ“ƒNiŒõŽ²‚ð‹‚ß‚é‚½‚ßj
-	{ NON, CAM, HP  },	// HT  : “ª‚Ìƒ`ƒ‹ƒgŽ²‚©‚çƒJƒƒ‰ (Accelite‚ÍŒÅ’è)
-	{ NON, HT , SH  },	// HP  : “ª‚Ìƒpƒ“Ž²‚©‚çƒ`ƒ‹ƒgŽ²
-	{ NON, HP , CS  },	// SH  : Œ¨’†S‚©‚ç“ª‚Ìƒpƒ“Ž²
-	{ NON, SH , CC  },	// CS  : ˜‚©‚çŒ¨’†S
-	{ RY , CS , NON },	// CC  : ˜‚©‚çŒ¨’†S
-//	˜ -> ‰E‘«æ
-	{ LY , RR1, CC  },	// RY  : ‰EŒÒƒˆ[Ž²‚©‚ç‰EŒÒƒ[ƒ‹Ž²
-	{ NON, RP1, RY  },	// RR1 : ‰EŒÒƒ[ƒ‹Ž²‚©‚ç‰EŒÒƒsƒbƒ`Ž²
-	{ NON, RP2, RR1 },	// RP1 : ‰EŒÒƒsƒbƒ`Ž²‚©‚ç‰E•Gãƒsƒbƒ`Ž²
-	{ NON, RP3, RP1 },	// RP2 : ‰E•Gãƒsƒbƒ`Ž²‚©‚ç‰E•G‰ºƒsƒbƒ`Ž²
-	{ NON, RP4, RP2 },	// RP3 : ‰E•G‰ºƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒsƒbƒ`Ž²
-	{ NON, RR2, RP3 },	// RP4 : ‰E‘«Žñƒsƒbƒ`Ž²‚©‚ç‰E‘«Žñƒ[ƒ‹Ž²
-	{ NON, RF , RP4 },	// RR2 : ‰E‘«Žñƒ[ƒ‹Ž²‚©‚ç‰E‘«æ
-	{ NON, NON, RR2 },	// RF  : ‰E‘«æ
-//	˜ -> ¶‘«æ
-	{ RSP, LR1, CC  },	// LY  : ¶ŒÒƒˆ[Ž²‚©‚ç¶ŒÒƒ[ƒ‹Ž²
-	{ NON, LP1, LY  },	// LR1 : ¶ŒÒƒ[ƒ‹Ž²‚©‚ç¶ŒÒƒsƒbƒ`Ž²
-	{ NON, LP2, LR1 },	// LP1 : ¶ŒÒƒsƒbƒ`Ž²‚©‚ç¶•Gãƒsƒbƒ`Ž²
-	{ NON, LP3, LP1 },	// LP2 : ¶•Gãƒsƒbƒ`Ž²‚©‚ç¶•G‰ºƒsƒbƒ`Ž²
-	{ NON, LP4, LP2 },	// LP3 : ¶•G‰ºƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒsƒbƒ`Ž²
-	{ NON, LR2, LP3 },	// LP4 : ¶‘«Žñƒsƒbƒ`Ž²‚©‚ç¶‘«Žñƒ[ƒ‹Ž²
-	{ NON, LF , LP4 },	// LR2 : ¶‘«Žñƒ[ƒ‹Ž²‚©‚ç¶‘«æ
-	{ NON, NON, LR2 },	// LF  : ¶‘«æ
-//	Œ¨’†S -> ‰EŽèæ
-	{ LSP, RSR, CS  },	// RSP : ‰EŒ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	{ NON, RH , RSP },	// RSR : ‰EŒ¨ƒ[ƒ‹Ž²‚©‚ç‰E˜ræ’[
-	{ NON, NON, RSR },	// RH  : ‰E˜ræ’[
-//	Œ¨’†S -> ¶Žèæ
-	{ NON, LSR, CS  },	// LSP : ‰EŒ¨ƒsƒbƒ`Ž²‚©‚çƒ[ƒ‹Ž²
-	{ NON, LH , LSP },	// LSR : ‰EŒ¨ƒ[ƒ‹Ž²‚©‚ç‰E˜ræ’[
-	{ NON, NON, LSR },	// LH  : ‰E˜ræ’[
+	{ NON, NON, HT  },	// CAM : ã‚«ãƒ¡ãƒ©ã®ãƒªãƒ³ã‚¯ï¼ˆå…‰è»¸ã‚’æ±‚ã‚ã‚‹ãŸã‚ï¼‰
+	{ NON, CAM, HP  },	// HT  : é ­ã®ãƒãƒ«ãƒˆè»¸ã‹ã‚‰ã‚«ãƒ¡ãƒ© (Acceliteã¯å›ºå®š)
+	{ NON, HT , SH  },	// HP  : é ­ã®ãƒ‘ãƒ³è»¸ã‹ã‚‰ãƒãƒ«ãƒˆè»¸
+	{ NON, HP , CS  },	// SH  : è‚©ä¸­å¿ƒã‹ã‚‰é ­ã®ãƒ‘ãƒ³è»¸
+	{ NON, SH , CC  },	// CS  : è…°ã‹ã‚‰è‚©ä¸­å¿ƒ
+	{ RY , CS , NON },	// CC  : è…°ã‹ã‚‰è‚©ä¸­å¿ƒ
+//	è…° -> å³è¶³å…ˆ
+	{ LY , RR1, CC  },	// RY  : å³è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, RP1, RY  },	// RR1 : å³è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è‚¡ãƒ”ãƒƒãƒè»¸
+	{ NON, RP2, RR1 },	// RP1 : å³è‚¡ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è†ä¸Šãƒ”ãƒƒãƒè»¸
+	{ NON, RP3, RP1 },	// RP2 : å³è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	{ NON, RP4, RP2 },	// RP3 : å³è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	{ NON, RR2, RP3 },	// RP4 : å³è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, RF , RP4 },	// RR2 : å³è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è¶³å…ˆ
+	{ NON, NON, RR2 },	// RF  : å³è¶³å…ˆ
+//	è…° -> å·¦è¶³å…ˆ
+	{ RSP, LR1, CC  },	// LY  : å·¦è‚¡ãƒ¨ãƒ¼è»¸ã‹ã‚‰å·¦è‚¡ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, LP1, LY  },	// LR1 : å·¦è‚¡ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è‚¡ãƒ”ãƒƒãƒè»¸
+	{ NON, LP2, LR1 },	// LP1 : å·¦è‚¡ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è†ä¸Šãƒ”ãƒƒãƒè»¸
+	{ NON, LP3, LP1 },	// LP2 : å·¦è†ä¸Šãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸
+	{ NON, LP4, LP2 },	// LP3 : å·¦è†ä¸‹ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸
+	{ NON, LR2, LP3 },	// LP4 : å·¦è¶³é¦–ãƒ”ãƒƒãƒè»¸ã‹ã‚‰å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, LF , LP4 },	// LR2 : å·¦è¶³é¦–ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å·¦è¶³å…ˆ
+	{ NON, NON, LR2 },	// LF  : å·¦è¶³å…ˆ
+//	è‚©ä¸­å¿ƒ -> å³æ‰‹å…ˆ
+	{ LSP, RSR, CS  },	// RSP : å³è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, RH , RSP },	// RSR : å³è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è…•å…ˆç«¯
+	{ NON, NON, RSR },	// RH  : å³è…•å…ˆç«¯
+//	è‚©ä¸­å¿ƒ -> å·¦æ‰‹å…ˆ
+	{ NON, LSR, CS  },	// LSP : å³è‚©ãƒ”ãƒƒãƒè»¸ã‹ã‚‰ãƒ­ãƒ¼ãƒ«è»¸
+	{ NON, LH , LSP },	// LSR : å³è‚©ãƒ­ãƒ¼ãƒ«è»¸ã‹ã‚‰å³è…•å…ˆç«¯
+	{ NON, NON, LSR },	// LH  : å³è…•å…ˆç«¯
 };
 
-#endif
+//#endif
 
 }

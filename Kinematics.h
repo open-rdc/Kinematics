@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * @file Kinematics.h
  * @brief 運動学を計算するプログラム
  * @date 2014.1.1
