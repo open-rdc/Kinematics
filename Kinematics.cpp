@@ -201,6 +201,24 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 		idx.push_back(FindRoute(to[i]));
 	}
 
+	{
+		//! Leavenbarg
+		const float lambda_l = 1E-20;
+		const auto jacobian = CalcJacobian(idx.at(i));
+		const auto error = CalcVWerr(target[i], link[to[i]]);
+		const auto jacobian_square = jacobian * jacobian.transpose();
+		const auto lambda_identity = std::pow(lambda_l, 2) * Eigen::MatrixXf::Identity(error.size(), error.size());
+		const auto jacobian_i = jacobian_square + lambda_identity;
+
+		const Eigen::VectorXf z = jacobian_i.colPivHouseholderQr().solve(error);
+		const Eigen::VectorXf delta_q = jacobian.transpose() * z;
+
+		if(error.norm() < EPS)
+			std::cout << "Success" << std::endl;
+		else
+			std::cout << "Failed" << std::endl;
+	}
+
 	vector<bool> is_finish;
 	for(int i = 0; i < to.size(); i ++) is_finish.push_back(false);
 
