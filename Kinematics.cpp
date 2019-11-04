@@ -192,7 +192,6 @@ t_matrix PseudoInverse(const t_matrix& m, const float &tolerance=1.e-6)
 void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 {
 	const float EPS = 1.0e-6;
-	const float lambda = 0.5f;
 	Matrix3f J;
 
 	ForwardKinematics(Const::CC);
@@ -200,7 +199,7 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 	for(int i = 0; i < to.size(); i ++){
 		idx.push_back(FindRoute(to[i]));
 	}
-
+/*
 	{
 		//! Leavenbarg
 		const float lambda_l = 1E-20;
@@ -218,6 +217,7 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 		else
 			std::cout << "Failed" << std::endl;
 	}
+*/
 
 	vector<bool> is_finish;
 	for(int i = 0; i < to.size(); i ++) is_finish.push_back(false);
@@ -231,17 +231,26 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 			}
 			MatrixXf J = CalcJacobian(idx[j]);
 			MatrixXf err = CalcVWerr(target[j], link[to[j]]);
-            
+
 //            std::cout << J << std::endl << std::endl;
 //            std::cout << err.norm() << std::endl << std::endl;
 
 			if (err.norm() < EPS){
 				is_finish[j] = true;
 				finish_count ++;
+	            std::cout << "finish id: " << j << ", num: " << i << std::endl;
 				continue;
 			}
 
-			VectorXf dq = lambda * (J.inverse() * err);
+			// Leavenbarg
+			const float lambda = 0.001f;
+			const auto Hk = J.transpose() * J + lambda * Eigen::MatrixXf::Identity(err.size(), err.size());
+			const auto gk = J.transpose() * err;
+			VectorXf dq = Hk.inverse() * gk;
+
+			//
+//			VectorXf dq = lambda * (J.inverse() * err);
+
 			for(int nn = 0; nn < idx[j].size(); nn ++){
 				int k = idx[j].at(nn);
 //                std::cout << k << ", ";
