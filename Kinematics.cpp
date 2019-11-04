@@ -199,25 +199,6 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 	for(int i = 0; i < to.size(); i ++){
 		idx.push_back(FindRoute(to[i]));
 	}
-/*
-	{
-		//! Leavenbarg
-		const float lambda_l = 1E-20;
-		const auto jacobian = CalcJacobian(idx.at(i));
-		const auto error = CalcVWerr(target[i], link[to[i]]);
-		const auto jacobian_square = jacobian * jacobian.transpose();
-		const auto lambda_identity = std::pow(lambda_l, 2) * Eigen::MatrixXf::Identity(error.size(), error.size());
-		const auto jacobian_i = jacobian_square + lambda_identity;
-
-		const Eigen::VectorXf z = jacobian_i.colPivHouseholderQr().solve(error);
-		const Eigen::VectorXf delta_q = jacobian.transpose() * z;
-
-		if(error.norm() < EPS)
-			std::cout << "Success" << std::endl;
-		else
-			std::cout << "Failed" << std::endl;
-	}
-*/
 
 	vector<bool> is_finish;
 	for(int i = 0; i < to.size(); i ++) is_finish.push_back(false);
@@ -232,9 +213,6 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 			MatrixXf J = CalcJacobian(idx[j]);
 			MatrixXf err = CalcVWerr(target[j], link[to[j]]);
 
-//            std::cout << J << std::endl << std::endl;
-//            std::cout << err.norm() << std::endl << std::endl;
-
 			if (err.norm() < EPS){
 				is_finish[j] = true;
 				finish_count ++;
@@ -242,21 +220,35 @@ void Kinematics::InverseKinematics(vector<int> to, vector<Link> target)
 				continue;
 			}
 
-			// Leavenbarg
+#if 0
+			// LM method (QR decomposition)
+			const float lambda = 0.001f;
+			const auto Hk = J.transpose() * J + lambda * Eigen::MatrixXf::Identity(err.size(), err.size());
+			const auto gk = J.transpose() * err;
+			VectorXf dq = Hk.colPivHouseholderQr().solve(gk);
+#endif
+#if 0
+			// LM method
 			const float lambda = 0.001f;
 			const auto Hk = J.transpose() * J + lambda * Eigen::MatrixXf::Identity(err.size(), err.size());
 			const auto gk = J.transpose() * err;
 			VectorXf dq = Hk.inverse() * gk;
-
-			//
-//			VectorXf dq = lambda * (J.inverse() * err);
+#endif
+#if 1
+			// Newton Raphson (QR decomposition)
+			const float lambda = 0.7;
+			VectorXf dq = lambda * J.colPivHouseholderQr().solve(err);
+#endif
+#if 0
+			// Newton Raphson
+			const float lambda = 0.7;
+			VectorXf dq = lambda * (J.inverse() * err);
+#endif
 
 			for(int nn = 0; nn < idx[j].size(); nn ++){
 				int k = idx[j].at(nn);
-//                std::cout << k << ", ";
 				link[k].q = link[k].q + dq(nn);
 			}
-//            std::cout << std::endl;
 		}
 		if (finish_count == to.size()) break;
 		link[Const::RP2].q = - link[Const::RP1].q;		// 平行リンクのために追加した処理
